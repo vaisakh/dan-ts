@@ -1,0 +1,19 @@
+export enum TokenType {
+    TOK_ILLEGAL_TOKEN = 'TOK_ILLEGAL_TOKEN',
+    TOK_DBENGINE = 'TOK_DBENGINE',
+    TOK_UNQUOTED_STRING = 'TOK_UNQUOTED_STRING',
+    TOK_OSQUARE = 'TOK_OSQUARE',
+    TOK_CSQUARE = 'TOK_CSQUARE',
+    TOK_DOT = 'TOK_DOT',
+    TOK_TABLES = 'TOK_TABLES',
+    TOK_OPAREN = 'TOK_OPAREN',
+    TOK_CPAREN = 'TOK_CPAREN',
+    TOK_QUOTED_STRING = 'TOK_QUOTED_STRING',
+    TOK_COMMA = 'TOK_COMMA',
+    TOK_NULL = 'TOK_NULL'
+}
+
+export interface Token {
+    value: string,
+    type: TokenType
+}
