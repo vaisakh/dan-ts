@@ -80,6 +80,9 @@ export class Lexer {
                     case 'TABLES':
                         token = { value: this.getLastString(), type: TokenType.TOK_TABLES }
                         break
+                    case 'SELECT':
+                        token = { value: this.getLastString(), type: TokenType.TOK_SELECT }
+                        break
                     default:
                         token = { value: this.getLastString(), type: TokenType.TOK_UNQUOTED_STRING }
                 }

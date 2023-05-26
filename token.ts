@@ -10,6 +10,7 @@ export enum TokenType {
     TOK_CPAREN = 'TOK_CPAREN',
     TOK_QUOTED_STRING = 'TOK_QUOTED_STRING',
     TOK_COMMA = 'TOK_COMMA',
+    TOK_SELECT = 'TOK_SELECT',
     TOK_NULL = 'TOK_NULL'
 }
 

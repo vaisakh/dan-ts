@@ -14,6 +14,8 @@ export class Parser extends Lexer {
         this.ds = new SQLPreDS()
     }
 
+    getDS = () => this.ds
+
     getNextToken() {
         this.lastToken = this.currentToken
         this.currentToken = this.getToken()
@@ -40,6 +42,19 @@ export class Parser extends Lexer {
 
         if(!this.parseTables()) return false
         console.dir('Succesfully parsed Tables!')
+
+        if(!this.isTokenDot()) {
+            console.dir({ Expected: TokenType.TOK_DOT, Recieved: this.currentToken })
+            return false
+        }
+
+        if(!this.isTokenSelect()) {
+            console.dir({ Expected: TokenType.TOK_SELECT, Recieved: this.currentToken })
+            return false
+        }
+
+        if(!this.parseSelect()) return false
+        console.dir('Succesfully parsed Select Field List!')
 
         return true
     }
@@ -103,6 +118,46 @@ export class Parser extends Lexer {
         return true
     }
 
+    parseSelect = () => {
+        if(!this.isTokenOpenSquareBracket()) {
+            console.dir({ Expected: TokenType.TOK_OSQUARE, Recieved: this.currentToken })
+            return false
+        }
+        if(!this.isTokenOParen()) {
+            console.dir({ Expected: TokenType.TOK_OPAREN, Recieved: this.currentToken })
+            return false
+        }
+        if(!this.isTokenQuotedString()) {
+            console.dir({ Expected: TokenType.TOK_QUOTED_STRING, Recieved: this.currentToken })
+            return false
+        }
+        this.ds.selectFieldList.push(this.getLastString())
+
+        while(this.isTokenComma()) {
+            if(this.isTokenQuotedString()) {
+                this.ds.selectFieldList.push(this.getLastString())
+            } else {
+                console.log('Error in loop')
+            }
+        }
+
+
+        if(this.currentToken.type == TokenType.TOK_CPAREN) {
+            console.dir('Finished processing Select Field List!')
+        } else {
+            console.dir({ Expected: TokenType.TOK_CPAREN, Recieved: this.currentToken })
+            return false
+        }
+
+        if(!this.isTokenCloseSquareBracket()) {
+            console.dir({ Expected: TokenType.TOK_CSQUARE, Recieved: this.currentToken })
+            return false
+        }
+
+        return true
+    }
+
+    isTokenSelect = () => this.expectNext(TokenType.TOK_SELECT)
     isTokenComma = () => this.expectNext(TokenType.TOK_COMMA)
     isTokenOParen = () => this.expectNext(TokenType.TOK_OPAREN)
     isTokenCParen = () => this.expectNext(TokenType.TOK_CPAREN)
